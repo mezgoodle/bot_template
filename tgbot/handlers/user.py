@@ -2,6 +2,8 @@ from aiogram.dispatcher.filters import CommandStart
 from aiogram.types import Message
 
 from loader import dp
+from tgbot.keyboards.reply.state_keyboard import create_markup
+from tgbot.states.states import Example
 
 import logging
 
@@ -10,4 +12,7 @@ import logging
 async def user_start(message: Message):
     logger = logging.getLogger(__name__)
     logger.info('Handler executed')
-    await message.reply("Hello, user!")
+
+    await Example.first()
+    markup = create_markup()
+    await message.reply("Hello, user!", reply_markup=markup)
