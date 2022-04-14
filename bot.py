@@ -3,7 +3,7 @@ import logging
 from aiogram import Dispatcher, executor
 
 from tgbot.filters.admin import IsAdminFilter
-from tgbot.middlewares.db import DbMiddleware
+from tgbot.middlewares.throttling import ThrottlingMiddleware
 from tgbot.services.setting_commands import set_default_commands
 from loader import dp
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def register_all_middlewares(dispatcher: Dispatcher):
     logger.info('Registering middlewares')
-    dispatcher.setup_middleware(DbMiddleware())
+    dispatcher.setup_middleware(ThrottlingMiddleware())
 
 
 def register_all_filters(dispatcher: Dispatcher):
