@@ -1,10 +1,8 @@
-from aiogram import Dispatcher
 from aiogram.types import Message
 
+from loader import dp
 
+
+@dp.message_handler()
 async def bot_echo(message: Message):
     await message.answer(message.text)
-
-
-def register_echo(dp: Dispatcher):
-    dp.register_message_handler(bot_echo)

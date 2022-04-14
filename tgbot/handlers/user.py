@@ -1,11 +1,9 @@
-from aiogram import Dispatcher
 from aiogram.dispatcher.filters import CommandStart
 from aiogram.types import Message
 
+from loader import dp
 
+
+@dp.message_handler(CommandStart(), state="*")
 async def user_start(message: Message):
     await message.reply("Hello, user!")
-
-
-def register_user(dp: Dispatcher):
-    dp.register_message_handler(user_start, CommandStart(), state="*")
