@@ -4,6 +4,7 @@ from aiogram import Dispatcher, executor
 
 from tgbot.filters.admin import IsAdminFilter
 from tgbot.middlewares.db import DbMiddleware
+from tgbot.services.setting_commands import set_default_commands
 from loader import dp
 
 logger = logging.getLogger(__name__)
@@ -25,10 +26,16 @@ def register_all_handlers(dispatcher: Dispatcher):
     return
 
 
+async def register_all_commands(dispatcher: Dispatcher):
+    logger.info('Registering commands')
+    await set_default_commands(dispatcher.bot)
+
+
 async def on_startup(dispatcher: Dispatcher):
     register_all_middlewares(dispatcher)
     register_all_filters(dispatcher)
     register_all_handlers(dispatcher)
+    await register_all_commands(dispatcher)
     logger.info('Bot started')
 
 
