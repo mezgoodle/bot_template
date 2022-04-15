@@ -11,7 +11,7 @@ import logging
 
 @dp.message_handler(CommandStart(), state="*")
 @rate_limit(5, 'start')
-async def user_start(message: Message):
+async def user_command(message: Message):
     logger = logging.getLogger(__name__)
     logger.info('Handler executed')
 

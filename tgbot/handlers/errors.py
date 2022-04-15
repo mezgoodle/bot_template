@@ -11,14 +11,6 @@ logger = logging.getLogger(__name__)
 
 @dp.errors_handler()
 async def errors_handler(update, exception):
-    """
-    Exceptions handler. Catches all exceptions within task factory tasks.
-    :param dispatcher:
-    :param update:
-    :param exception:
-    :return: stdout logging
-    """
-
     if isinstance(exception, MessageNotModified):
         logger.exception('Message is not modified')
         # do something here?
@@ -29,7 +21,7 @@ async def errors_handler(update, exception):
         logger.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
         return True
 
-    #  MUST BE THE  LAST CONDITION (ЭТО УСЛОВИЕ ВСЕГДА ДОЛЖНО БЫТЬ В КОНЦЕ)
+    #  MUST BE THE  LAST CONDITION
     if isinstance(exception, TelegramAPIError):
         logger.exception(f'TelegramAPIError: {exception} \nUpdate: {update}')
         return True

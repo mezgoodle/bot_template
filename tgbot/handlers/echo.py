@@ -6,7 +6,7 @@ import logging
 
 
 @dp.message_handler()
-async def bot_echo(message: Message):
+async def echo(message: Message):
     logger = logging.getLogger(__name__)
     logger.info('Handler executed')
     await message.answer(message.text)
