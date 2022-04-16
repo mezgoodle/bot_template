@@ -25,7 +25,7 @@ def load_config(path: str = None):
 
     return Config(
         tg_bot=TgBot(
-            token=os.getenv('BOT_TOKEN', '5135575762:AAE76qg7AQNTFNwGKf67PHXpxYhip_7TEXI'),
+            token=os.getenv('BOT_TOKEN', 'token'),
         ),
         db=DbConfig(
             host=os.getenv('DB_HOST', 'localhost'),
