@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from aiogram.utils.exceptions import (TelegramAPIError,
                                       MessageNotModified,
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @dp.errors_handler()
-async def errors_handler(update, exception):
+async def errors_handler(update, exception) -> Optional[bool]:
     if isinstance(exception, MessageNotModified):
         logger.exception('Message is not modified')
         # do something here?
@@ -28,4 +29,3 @@ async def errors_handler(update, exception):
 
     # At least you have tried.
     logger.exception(f'Update: {update} \n{exception}')
-

@@ -21,8 +21,8 @@ class Config:
     db: DbConfig
 
 
-def load_config(path: str = None):
-
+def load_config(path: str = None) -> Config:
+    # load_dotenv(path)
     return Config(
         tg_bot=TgBot(
             token=os.getenv('BOT_TOKEN', 'token'),

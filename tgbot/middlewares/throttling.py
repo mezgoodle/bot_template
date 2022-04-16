@@ -10,9 +10,6 @@ from aiogram.utils.exceptions import Throttled
 def rate_limit(limit: int, key=None):
     """
     Decorator for configuring rate limit and key in different functions.
-    :param limit:
-    :param key:
-    :return:
     """
 
     def decorator(func):
@@ -37,7 +34,6 @@ class ThrottlingMiddleware(BaseMiddleware):
     async def on_process_message(self, message: types.Message, data: dict):
         """
         This handler is called when dispatcher receives a message
-        :param message:
         """
         # Get current handler
         handler = current_handler.get()
@@ -65,8 +61,6 @@ class ThrottlingMiddleware(BaseMiddleware):
     async def message_throttled(self, message: types.Message, throttled: Throttled):
         """
         Notify user only on first exceed and notify about unlocking only on last exceed
-        :param message:
-        :param throttled:
         """
         handler = current_handler.get()
         dispatcher = Dispatcher.get_current()

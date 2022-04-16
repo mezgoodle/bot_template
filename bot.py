@@ -10,28 +10,27 @@ from loader import dp
 logger = logging.getLogger(__name__)
 
 
-def register_all_middlewares(dispatcher: Dispatcher):
+def register_all_middlewares(dispatcher: Dispatcher) -> None:
     logger.info('Registering middlewares')
     dispatcher.setup_middleware(ThrottlingMiddleware())
 
 
-def register_all_filters(dispatcher: Dispatcher):
+def register_all_filters(dispatcher: Dispatcher) -> None:
     logger.info('Registering filters')
     dispatcher.filters_factory.bind(IsAdminFilter)
 
 
-def register_all_handlers(dispatcher: Dispatcher):
+def register_all_handlers(dispatcher: Dispatcher) -> None:
     from tgbot import handlers
     logger.info('Registering handlers')
-    return
 
 
-async def register_all_commands(dispatcher: Dispatcher):
+async def register_all_commands(dispatcher: Dispatcher) -> None:
     logger.info('Registering commands')
     await set_default_commands(dispatcher.bot)
 
 
-async def on_startup(dispatcher: Dispatcher):
+async def on_startup(dispatcher: Dispatcher) -> None:
     register_all_middlewares(dispatcher)
     register_all_filters(dispatcher)
     register_all_handlers(dispatcher)
@@ -39,7 +38,7 @@ async def on_startup(dispatcher: Dispatcher):
     logger.info('Bot started')
 
 
-async def on_shutdown(dispatcher: Dispatcher):
+async def on_shutdown(dispatcher: Dispatcher) -> None:
     await dispatcher.storage.close()
     await dispatcher.storage.wait_closed()
     logger.info('Bot shutdown')

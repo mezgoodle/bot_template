@@ -8,7 +8,7 @@ import logging
 
 
 @dp.message_handler(CommandHelp(), state='*')
-async def help_command(message: Message):
+async def help_command(message: Message) -> Message:
     logger = logging.getLogger(__name__)
     logger.info('Handler executed')
 
