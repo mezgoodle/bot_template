@@ -31,6 +31,7 @@ classDiagram
     bot <|-- `tgbot.filters`: custom_filter
     bot <|-- `tgbot.middlewares` : custom_middleware
     bot <|-- `tgbot.services` : set_commands()
+    bot <|-- `tgbot.config` : load_config()
     `tgbot.handlers` <|-- some_handler
     `tgbot.handlers` <|-- `tgbot.keyboards`: reply_keyboard, inline_keyboard
     `tgbot.handlers` <|-- `tgbot.middlewares` : rate_limit()
