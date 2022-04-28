@@ -109,6 +109,7 @@ classDiagram
 
 - [genji-moderator](https://github.com/mezgoodle/genji-moderator)
 - [Telegramia](https://github.com/mezidia/Telegramia)
+- [weather-bot](https://github.com/mezgoodle/weather-bot)
 
 ## Installation :computer:
 
