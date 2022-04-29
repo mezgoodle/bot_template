@@ -9,6 +9,7 @@ from tgbot.config import load_config
 from tgbot.filters.admin import IsAdminFilter
 from tgbot.middlewares.throttling import ThrottlingMiddleware
 from tgbot.services.setting_commands import set_default_commands
+from tgbot.services.admins_notify import on_startup_notify
 from loader import dp
 
 logger = logging.getLogger(__name__)
@@ -48,6 +49,9 @@ async def on_startup(dispatcher: Dispatcher, webhook_url: str = None) -> None:
     elif webhook.url:
         await dispatcher.bot.delete_webhook()
         logger.info('Webhook was deleted')
+
+    await on_startup_notify(dispatcher)
+
     logger.info('Bot started')
 
 

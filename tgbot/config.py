@@ -13,6 +13,7 @@ class DbConfig:
 @dataclass
 class TgBot:
     token: str
+    admins: list
 
 
 @dataclass
@@ -26,6 +27,9 @@ def load_config(path: str = None) -> Config:
     return Config(
         tg_bot=TgBot(
             token=os.getenv('BOT_TOKEN', 'token'),
+            admins=[
+                '353057906',
+            ],
         ),
         db=DbConfig(
             host=os.getenv('DB_HOST', 'localhost'),
