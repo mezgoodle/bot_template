@@ -30,7 +30,7 @@ classDiagram
     bot <|-- `tgbot.handlers`
     bot <|-- `tgbot.filters`: custom_filter
     bot <|-- `tgbot.middlewares` : custom_middleware
-    bot <|-- `tgbot.services` : set_commands()
+    bot <|-- `tgbot.services` : set_commands(), on_startup_notify()
     bot <|-- `tgbot.config` : load_config()
     `tgbot.handlers` <|-- some_handler
     `tgbot.handlers` <|-- `tgbot.keyboards`: reply_keyboard, inline_keyboard
@@ -42,6 +42,7 @@ classDiagram
     `tgbot.keyboards` <|-- inline
     `tgbot.middlewares` <|-- custom_middleware
     `tgbot.services` <|-- set_default_commands
+    `tgbot.services` <|-- admins_notify
     class bot{
       Logger logger
       executor
@@ -99,6 +100,9 @@ classDiagram
     }
     class set_default_commands {
         set_commands()
+    }
+    class admins_notify {
+        on_startup_notify()
     }
     class `tgbot.states` {
         custom_state
