@@ -44,7 +44,7 @@ classDiagram
     `tgbot.services` <|-- set_default_commands
     `tgbot.services` <|-- admins_notify
     class bot{
-      Logger logger
+      loguru logger
       executor
       register_all_middlewares(dispatcher: Dispatcher)
       register_all_filters(dispatcher: Dispatcher)
