@@ -1,13 +1,11 @@
 from aiogram import Dispatcher
 from aiogram.utils.exceptions import ChatNotFound
+from loguru import logger
 
 from tgbot.config import load_config
 
-import logging
-
 
 async def on_startup_notify(dp: Dispatcher):
-    logger = logging.getLogger(__name__)
     logger.info('Start admins notification')
 
     config = load_config()
