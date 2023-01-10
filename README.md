@@ -1,6 +1,3 @@
-# bot_template
-My template for aiogram bots
-
 <h1 id="project-title" align="center">
   bot_template <img alt="logo" width="40" height="40" src="https://raw.githubusercontent.com/mezgoodle/images/master/MezidiaLogoTransparent.png" /><br>
   <img alt="language" src="https://img.shields.io/badge/language-python-brightgreen?style=flat-square" />
@@ -14,6 +11,10 @@ My template for aiogram bots
 <p align="center">
  🌟Hello everyone! This is the template for developing Telegram bots on Python with aiogram.🌟
 </p>
+
+## Quick message
+
+I recommend you look at the [template](https://github.com/mezgoodle/bot_template/tree/aiogramv3) for the third version of the aiogram and use it.
 
 ## Motivation :exclamation:
 
@@ -69,7 +70,7 @@ classDiagram
     class `tgbot.handlers`{
     }
     class some_handler{
-      
+
     }
     class `tgbot.filters`{
       custom_filter
@@ -84,19 +85,19 @@ classDiagram
         inline_keyboard
     }
     class `tgbot.middlewares` {
-        
+
     }
     class custom_middleware {
         rate_limit()
     }
     class `tgbot.misc` {
-        
+
     }
     class `tgbot.models` {
-        
+
     }
     class `tgbot.services` {
-        
+
     }
     class set_default_commands {
         set_commands()
