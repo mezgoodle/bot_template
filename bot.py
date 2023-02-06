@@ -5,7 +5,7 @@ from aiogram import Dispatcher
 from aiogram.utils.executor import start_polling, start_webhook
 from loguru import logger
 
-from tgbot.config import load_config
+from tgbot.config import config
 from tgbot.filters.admin import IsAdminFilter
 from tgbot.middlewares.throttling import ThrottlingMiddleware
 from tgbot.services.setting_commands import set_default_commands
@@ -14,22 +14,23 @@ from loader import dp
 
 
 def register_all_middlewares(dispatcher: Dispatcher) -> None:
-    logger.info('Registering middlewares')
+    logger.info("Registering middlewares")
     dispatcher.setup_middleware(ThrottlingMiddleware())
 
 
 def register_all_filters(dispatcher: Dispatcher) -> None:
-    logger.info('Registering filters')
+    logger.info("Registering filters")
     dispatcher.filters_factory.bind(IsAdminFilter)
 
 
 def register_all_handlers(dispatcher: Dispatcher) -> None:
     from tgbot import handlers
-    logger.info('Registering handlers')
+
+    logger.info("Registering handlers")
 
 
 async def register_all_commands(dispatcher: Dispatcher) -> None:
-    logger.info('Registering commands')
+    logger.info("Registering commands")
     await set_default_commands(dispatcher.bot)
 
 
@@ -43,37 +44,39 @@ async def on_startup(dispatcher: Dispatcher, webhook_url: str = None) -> None:
 
     if webhook_url:
         await dispatcher.bot.set_webhook(webhook_url)
-        logger.info('Webhook was set')
+        logger.info("Webhook was set")
     elif webhook.url:
         await dispatcher.bot.delete_webhook()
-        logger.info('Webhook was deleted')
+        logger.info("Webhook was deleted")
 
     await on_startup_notify(dispatcher)
 
-    logger.info('Bot started')
+    logger.info("Bot started")
 
 
 async def on_shutdown(dispatcher: Dispatcher) -> None:
     await dispatcher.storage.close()
     await dispatcher.storage.wait_closed()
-    logger.info('Bot shutdown')
+    logger.info("Bot shutdown")
 
 
-if __name__ == '__main__':
-    logger.add('tgbot.log', format='{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}', rotation='10 KB',
-               compression='zip')
-    config = load_config()
-
-    logger.info('Initializing bot')
+if __name__ == "__main__":
+    logger.add(
+        "tgbot.log",
+        format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
+        rotation="10 KB",
+        compression="zip",
+    )
+    logger.info("Initializing bot")
 
     # Webhook settings
-    HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME')
-    WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
-    WEBHOOK_PATH = f'/webhook/{config.tg_bot.token}'
-    WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
+    HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
+    WEBHOOK_HOST = f"https://{HEROKU_APP_NAME}.herokuapp.com"
+    WEBHOOK_PATH = f"/webhook/{config.bot_token.get_secret_value()}"
+    WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
     # Webserver settings
-    WEBAPP_HOST = '0.0.0.0'
-    WEBAPP_PORT = int(os.getenv('PORT', 5000))
+    WEBAPP_HOST = "0.0.0.0"
+    WEBAPP_PORT = int(os.getenv("PORT", 5000))
 
     start_polling(
         dispatcher=dp,

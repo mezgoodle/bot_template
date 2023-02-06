@@ -8,7 +8,7 @@ from tgbot.middlewares.throttling import rate_limit
 
 
 @dp.message_handler(CommandStart(), state="*")
-@rate_limit(5, 'start')
+@rate_limit(5, "start")
 async def user_command(message: Message) -> Message:
     await Example.first()
     markup = create_markup()
