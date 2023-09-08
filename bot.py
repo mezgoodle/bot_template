@@ -1,96 +1,76 @@
+import asyncio
 import logging
-import os
 
-from aiogram import Dispatcher
-from aiogram.utils.executor import start_polling, start_webhook
-from loguru import logger
+from aiogram import Bot, Dispatcher
+from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
-from tgbot.config import config
-from tgbot.filters.admin import IsAdminFilter
+from loader import bot, dp
+from tgbot.config import Settings, config
+from tgbot.middlewares.settings import ConfigMiddleware
 from tgbot.middlewares.throttling import ThrottlingMiddleware
-from tgbot.services.setting_commands import set_default_commands
 from tgbot.services.admins_notify import on_startup_notify
-from loader import dp
+from tgbot.services.setting_commands import set_default_commands
 
 
-def register_all_middlewares(dispatcher: Dispatcher) -> None:
-    logger.info("Registering middlewares")
-    dispatcher.setup_middleware(ThrottlingMiddleware())
+def register_all_handlers() -> None:
+    from tgbot import handlers  # noqa: F401
+
+    logging.info("Handlers registered.")
 
 
-def register_all_filters(dispatcher: Dispatcher) -> None:
-    logger.info("Registering filters")
-    dispatcher.filters_factory.bind(IsAdminFilter)
+async def register_all_commands(bot: Bot) -> None:
+    await set_default_commands(bot)
+    logging.info("Commands registered.")
 
 
-def register_all_handlers(dispatcher: Dispatcher) -> None:
-    from tgbot import handlers
+def register_global_middlewares(dp: Dispatcher, config: Settings):
+    middlewares = [
+        ConfigMiddleware(config),
+        ThrottlingMiddleware(),
+        # DatabaseMiddleware(session_pool),
+    ]
 
-    logger.info("Registering handlers")
+    for middleware in middlewares:
+        dp.message.outer_middleware(middleware)
+        dp.callback_query.outer_middleware(middleware)
+
+    dp.callback_query.middleware(
+        CallbackAnswerMiddleware(pre=True, text="Ready!", show_alert=True)
+    )
+    logging.info("Middlewares registered.")
 
 
-async def register_all_commands(dispatcher: Dispatcher) -> None:
-    logger.info("Registering commands")
-    await set_default_commands(dispatcher.bot)
-
-
-async def on_startup(dispatcher: Dispatcher, webhook_url: str = None) -> None:
-    register_all_middlewares(dispatcher)
-    register_all_filters(dispatcher)
-    register_all_handlers(dispatcher)
-    await register_all_commands(dispatcher)
-    # Get current webhook status
-    webhook = await dispatcher.bot.get_webhook_info()
-
-    if webhook_url:
-        await dispatcher.bot.set_webhook(webhook_url)
-        logger.info("Webhook was set")
-    elif webhook.url:
-        await dispatcher.bot.delete_webhook()
-        logger.info("Webhook was deleted")
-
-    await on_startup_notify(dispatcher)
-
-    logger.info("Bot started")
+async def on_startup(bot: Bot, dispatcher: Dispatcher) -> None:
+    register_all_handlers()
+    register_global_middlewares(dispatcher, config)
+    await register_all_commands(bot)
+    await on_startup_notify(bot)
+    logging.info("Bot started.")
 
 
 async def on_shutdown(dispatcher: Dispatcher) -> None:
     await dispatcher.storage.close()
-    await dispatcher.storage.wait_closed()
-    logger.info("Bot shutdown")
+    logging.info("Storage closed.")
+    logging.info("Bot stopped.")
+
+
+async def main() -> None:
+    dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
+    # And the run events dispatching
+    await dp.start_polling(bot)
+    # * For the webhook usage:
+    # * https://docs.aiogram.dev/en/dev-3.x/dispatcher/webhook.html#examples
 
 
 if __name__ == "__main__":
-    logger.add(
-        "tgbot.log",
-        format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-        rotation="10 KB",
-        compression="zip",
+    logging.basicConfig(
+        level=logging.INFO,
+        filename="bot.log",
+        format="%(asctime)s :: %(levelname)s :: %(module)s.%(funcName)s :: %(lineno)d :: %(message)s",  # noqa: E501
+        filemode="w",
     )
-    logger.info("Initializing bot")
-
-    # Webhook settings
-    HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")
-    WEBHOOK_HOST = f"https://{HEROKU_APP_NAME}.herokuapp.com"
-    WEBHOOK_PATH = f"/webhook/{config.bot_token.get_secret_value()}"
-    WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-    # Webserver settings
-    WEBAPP_HOST = "0.0.0.0"
-    WEBAPP_PORT = int(os.getenv("PORT", 5000))
-
-    start_polling(
-        dispatcher=dp,
-        on_startup=on_startup,
-        on_shutdown=on_shutdown,
-        skip_updates=True,
-    )
-
-    # start_webhook(
-    #     dispatcher=dp,
-    #     on_startup=functools.partial(on_startup, webhook_url=WEBHOOK_URL),
-    #     on_shutdown=on_shutdown,
-    #     webhook_path=WEBHOOK_PATH,
-    #     skip_updates=True,
-    #     host=WEBAPP_HOST,
-    #     port=WEBAPP_PORT
-    # )
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logging.warning("Bot stopped!")

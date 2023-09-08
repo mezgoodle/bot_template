@@ -1,9 +1,15 @@
+from aiogram import Router
+from aiogram.filters import Command
 from aiogram.types import Message
-from aiogram.dispatcher.filters import CommandStart
 
 from loader import dp
+from tgbot.filters.admin import IsAdminFilter
+
+router = Router()
+router.message.filter(IsAdminFilter())
+dp.include_router(router)
 
 
-@dp.message_handler(CommandStart(), state="*", is_admin=True)
-async def admin_command(message: Message) -> Message:
-    await message.reply(f"Hello, {message.from_user.username}!")
+@router.message(Command("admin"))
+async def command_admin_handler(message: Message) -> None:
+    return await message.answer("You are admin!")

@@ -130,3 +130,12 @@ dmypy.json
 
 # PyCharm
 .idea
+
+# SQLite
+*.db
+
+# Logs
+*.zip
+
+# VSCode
+.vscode

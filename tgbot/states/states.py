@@ -1,5 +1,6 @@
-from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.fsm.state import State, StatesGroup
 
 
-class Example(StatesGroup):
-    example = State()
+class OrderFood(StatesGroup):
+    choosing_food_name = State()
+    choosing_food_size = State()
