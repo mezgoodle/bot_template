@@ -12,109 +12,18 @@
  🌟Hello everyone! This is the template for developing Telegram bots on Python with aiogram.🌟
 </p>
 
-## Quick message
+## Documentation
 
-I recommend you look at the [template](https://github.com/mezgoodle/bot_template/tree/aiogramv3) for the third version of the aiogram and use it.
+Go to the Wiki [page](https://github.com/mezgoodle/bot_template/wiki) and get all the needed information.
 
 ## Motivation :exclamation:
 
-When I was developing [Telegramia](https://github.com/mezidia/telegramia), I've used these templates: [aiogram-bot-template](https://github.com/Latand/aiogram-bot-template) and [tgbot_template](https://github.com/Latand/tgbot_template) for creating bots. And I have many probles with them. So I decided to create my own template.
+When I was developing [Telegramia](https://github.com/mezidia/telegramia), I've used these templates: [aiogram-bot-template](https://github.com/Latand/aiogram-bot-template) and [tgbot_template](https://github.com/Latand/tgbot_template) for creating bots. And I have many problems with them. So I decided to create my own template.
 
-## Diagram
+## Links
 
-Here you can understand how template works and what is imported from where.
-
-```mermaid
-classDiagram
-    bot <|-- loader: dp
-    bot <|-- aiogram: executor
-    bot <|-- `tgbot.handlers`
-    bot <|-- `tgbot.filters`: custom_filter
-    bot <|-- `tgbot.middlewares` : custom_middleware
-    bot <|-- `tgbot.services` : set_commands(), on_startup_notify()
-    bot <|-- `tgbot.config` : load_config()
-    `tgbot.handlers` <|-- some_handler
-    `tgbot.handlers` <|-- `tgbot.keyboards`: reply_keyboard, inline_keyboard
-    `tgbot.handlers` <|-- `tgbot.middlewares` : rate_limit()
-    `tgbot.handlers` <|-- `tgbot.states` : custom_state
-    some_handler <|-- loader: dp
-    loader <|-- `tgbot.config` : load_config()
-    `tgbot.keyboards` <|-- reply
-    `tgbot.keyboards` <|-- inline
-    `tgbot.middlewares` <|-- custom_middleware
-    `tgbot.services` <|-- set_default_commands
-    `tgbot.services` <|-- admins_notify
-    class bot{
-      loguru logger
-      executor
-      register_all_middlewares(dispatcher: Dispatcher)
-      register_all_filters(dispatcher: Dispatcher)
-      register_all_handlers(dispatcher: Dispatcher)
-      register_all_commands(dispatcher: Dispatcher)
-      on_startup(dispatcher: Dispatcher)
-      on_shutdown(dispatcher: Dispatcher)
-      executor.start_polling()
-    }
-    class aiogram{
-        executor
-    }
-    class loader{
-      Config config
-      Bot bot
-      Dispatcher dp
-      MemoryStorage storage
-    }
-    class `tgbot.config`{
-      load_config()
-    }
-    class `tgbot.handlers`{
-    }
-    class some_handler{
-
-    }
-    class `tgbot.filters`{
-      custom_filter
-    }
-    class `tgbot.keyboards`{
-
-    }
-    class reply {
-        reply_keyboard
-    }
-    class inline {
-        inline_keyboard
-    }
-    class `tgbot.middlewares` {
-
-    }
-    class custom_middleware {
-        rate_limit()
-    }
-    class `tgbot.misc` {
-
-    }
-    class `tgbot.models` {
-
-    }
-    class `tgbot.services` {
-
-    }
-    class set_default_commands {
-        set_commands()
-    }
-    class admins_notify {
-        on_startup_notify()
-    }
-    class `tgbot.states` {
-        custom_state
-    }
-```
-
-## Examples
-
-- [genji-moderator](https://github.com/mezgoodle/genji-moderator)
-- [Telegramia](https://github.com/mezidia/Telegramia)
-- [weather-bot](https://github.com/mezgoodle/weather-bot)
+- Official AIOgram [documentation](https://docs.aiogram.dev/en/latest/).
+- [Guide](https://mastergroosha.github.io/aiogram-3-guide/) on russian.
 
 ## Installation :computer:
 
