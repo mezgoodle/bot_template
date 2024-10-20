@@ -23,7 +23,6 @@ When I was developing [Telegramia](https://github.com/mezidia/telegramia), I've 
 ## Links
 
 - Official AIOgram [documentation](https://docs.aiogram.dev/en/latest/).
-- [Guide](https://mastergroosha.github.io/aiogram-3-guide/) on russian.
 
 ## Installation :computer:
 
