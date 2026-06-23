@@ -22,7 +22,7 @@ pathspec==0.12.1
 platformdirs==4.5.1
 propcache==0.4.1
 pydantic==2.11.10
-pydantic-settings==2.12.0
+pydantic-settings==2.14.2
 pydantic_core==2.33.2
 python-dotenv==1.2.1
 pytokens==0.3.0
